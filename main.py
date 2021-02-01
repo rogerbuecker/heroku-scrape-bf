@@ -5,7 +5,7 @@ import sys
 import os
 
 sys.setrecursionlimit(99999) 
-debug = True
+debug = False
 
 def convert_to_min(seconds):
     return seconds * 60
