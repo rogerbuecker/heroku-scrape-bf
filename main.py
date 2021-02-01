@@ -30,7 +30,7 @@ def scrape_bfg_csv():
         browser.get('https://betfury.io/staking')
         browser.implicitly_wait(10)
 
-        sleep(5)
+        sleep(15)
 
         popup_close_button = browser.find_elements_by_class_name('popup-btn-close')
         if popup_close_button:
@@ -39,6 +39,7 @@ def scrape_bfg_csv():
         while True:
             browser.get('https://betfury.io/staking')
             browser.implicitly_wait(10)
+            sleep(15)
 
             btc_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[1]/div[1]').text
             eth_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[2]/span').text
