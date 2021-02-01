@@ -8,10 +8,10 @@ sys.setrecursionlimit(99999)
 debug = True
 
 mydb = mysql.connector.connect(
-  host='eu-cdbr-west-03.cleardb.net',
-  user='bfb5131858adb3',
-  password='063c3e1e',
-  database='heroku_3479afe5275ee82'
+  host=os.environ.get('DB_HOST'),
+  user=os.environ.get('DB_USER'),
+  password=os.environ.get('DB_PASS'),
+  database=os.environ.get('DB')
 )
 
 mycursor = mydb.cursor()
