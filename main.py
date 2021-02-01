@@ -7,15 +7,6 @@ import os
 sys.setrecursionlimit(99999) 
 debug = True
 
-mydb = mysql.connector.connect(
-  host=os.environ.get('DB_HOST'),
-  user=os.environ.get('DB_USER'),
-  password=os.environ.get('DB_PASS'),
-  database=os.environ.get('DB')
-)
-
-mycursor = mydb.cursor()
-
 def convert_to_min(seconds):
     return seconds * 60
 
@@ -61,6 +52,15 @@ def scrape_bfg_csv():
             btt_pot_value = btt_pot_value.replace("BTT", "")
             btt_pot_value = btt_pot_value.replace(" ", "")
             
+            mydb = mysql.connector.connect(
+            host=os.environ.get('DB_HOST'),
+            user=os.environ.get('DB_USER'),
+            password=os.environ.get('DB_PASS'),
+            database=os.environ.get('DB')
+            )
+
+            mycursor = mydb.cursor()
+
             sql = 'INSERT INTO staking (btc_pot, eth_pot, trx_pot, usdt_pot, btt_pot) VALUES (%s, %s, %s, %s, %s)'
             val = (btc_pot_value, eth_pot_value, trx_pot_value, usdt_pot_value, btt_pot_value)
             mycursor.execute(sql, val)
@@ -75,6 +75,8 @@ def scrape_bfg_csv():
                 print(btt_pot_value)
                 print('sleep')
 
+            mycursor.close()
+            mydb.close()
             sleep(convert_to_min(1))
 
     except Exception as e:
