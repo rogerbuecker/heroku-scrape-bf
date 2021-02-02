@@ -17,7 +17,7 @@ def convert_to_min(seconds):
 def generate_proxy_list():
     global proxyTries, proxies
     proxyTries += 1
-    req_proxy = RequestProxy(50)
+    req_proxy = RequestProxy(log_level=50)
     proxies = req_proxy.get_proxy_list()
     scrape_bfg_csv()
     
@@ -44,7 +44,7 @@ def scrape_bfg_csv():
         options.add_experimental_option('prefs', prefs)
 
         PROXY = random.choice(proxies).get_address()
-        
+
         if debug:
             print('use ' + PROXY + 'Proxy')
 
