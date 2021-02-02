@@ -56,12 +56,12 @@ def scrape_bfg_db():
             if debug:
                 print('use Proxy ' + PROXY)
 
-            webdriver.DesiredCapabilities.CHROME['proxy']={
-                "httpProxy":PROXY,
-                "ftpProxy":PROXY,
-                "sslProxy":PROXY,
-                "proxyType":"MANUAL"
-            }
+            # webdriver.DesiredCapabilities.CHROME['proxy']={
+            #     "httpProxy":PROXY,
+            #     "ftpProxy":PROXY,
+            #     "sslProxy":PROXY,
+            #     "proxyType":"MANUAL"
+            # }
 
             browser = webdriver.Chrome(executable_path=os.environ.get('CHROMEDRIVER_PATH'), options=options)
 
