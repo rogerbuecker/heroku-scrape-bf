@@ -2,17 +2,33 @@ import mysql.connector
 from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
 from selenium import webdriver
 from time import sleep
+import random
 import sys
 import os
 
 sys.setrecursionlimit(99999) 
 debug = True
+proxyTries = 0
+proxies = ''
 
 def convert_to_min(seconds):
     return seconds * 60
 
+def generate_proxy_list():
+    global proxyTries, proxies
+    proxyTries += 1
+    req_proxy = RequestProxy(50)
+    proxies = req_proxy.get_proxy_list()
+    scrape_bfg_csv()
+    
 def scrape_bfg_csv():
+    global proxyTries, proxies
     try:
+        if proxyTries >= 10:
+            print('get new proxys')
+            proxyTries = 0
+            generate_proxy_list()
+
         options = webdriver.ChromeOptions()
         options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 
@@ -26,10 +42,8 @@ def scrape_bfg_csv():
         prefs = {'profile.default_content_setting_values.notifications': 2}
         options.add_experimental_option('prefs', prefs)
 
-        req_proxy = RequestProxy() #you may get different number of proxy when  you run this at each time
-        proxies = req_proxy.get_proxy_list() #this will create proxy list
-        PROXY = proxies[0].get_address()
-
+        PROXY = random.choice(proxies).get_address()
+        print('use ' + PROXY + 'Proxy')
         webdriver.DesiredCapabilities.CHROME['proxy']={
             "httpProxy":PROXY,
             "ftpProxy":PROXY,
@@ -101,4 +115,4 @@ def scrape_bfg_csv():
         sleep(5)
         scrape_bfg_csv()
 
-scrape_bfg_csv()
+generate_proxy_list()
