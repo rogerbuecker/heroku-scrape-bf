@@ -25,7 +25,8 @@ def scrape_bfg_csv():
     global proxyTries, proxies
     try:
         if proxyTries >= 10:
-            print('get new proxys')
+            if debug:
+                print('get new proxys')
             proxyTries = 0
             generate_proxy_list()
 
@@ -43,7 +44,10 @@ def scrape_bfg_csv():
         options.add_experimental_option('prefs', prefs)
 
         PROXY = random.choice(proxies).get_address()
-        print('use ' + PROXY + 'Proxy')
+        
+        if debug:
+            print('use ' + PROXY + 'Proxy')
+
         webdriver.DesiredCapabilities.CHROME['proxy']={
             "httpProxy":PROXY,
             "ftpProxy":PROXY,
