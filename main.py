@@ -1,6 +1,3 @@
-import undetected_chromedriver as uc
-uc.install()
-
 import mysql.connector
 from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
 from selenium import webdriver
