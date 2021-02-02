@@ -48,7 +48,7 @@ def scrape_bfg_db():
             PROXY = random.choice(proxies).get_address()
 
             if debug:
-                print('use ' + PROXY + 'Proxy')
+                print('use Proxy' + PROXY)
 
             webdriver.DesiredCapabilities.CHROME['proxy']={
                 "httpProxy":PROXY,
@@ -65,7 +65,7 @@ def scrape_bfg_db():
 
             browser.get('https://betfury.io/staking')
             browser.implicitly_wait(10)
-            sleep(5)
+            sleep(10)
 
             btc_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[1]/div[1]').text
             eth_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[2]/span').text
