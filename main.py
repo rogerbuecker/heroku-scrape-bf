@@ -1,3 +1,6 @@
+import undetected_chromedriver as uc
+uc.install()
+
 import mysql.connector
 from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
 from selenium import webdriver
@@ -54,7 +57,7 @@ def scrape_bfg_db():
             PROXY = random.choice(proxies).get_address()
 
             if debug:
-                print('use Proxy' + PROXY)
+                print('use Proxy ' + PROXY)
 
             webdriver.DesiredCapabilities.CHROME['proxy']={
                 "httpProxy":PROXY,
