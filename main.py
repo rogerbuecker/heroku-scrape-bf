@@ -13,63 +13,59 @@ proxies = ''
 
 def convert_to_min(seconds):
     return seconds * 60
-
-def generate_proxy_list():
-    global proxyTries, proxies
-    proxyTries += 1
-    req_proxy = RequestProxy(log_level=50)
-    proxies = req_proxy.get_proxy_list()
-    scrape_bfg_csv()
-    
-def scrape_bfg_csv():
+  
+def scrape_bfg_db():
     global proxyTries, proxies
     try:
-        if proxyTries >= 10:
-            if debug:
-                print('get new proxys')
-            proxyTries = 0
-            generate_proxy_list()
-
-        options = webdriver.ChromeOptions()
-        options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-
-        options.add_argument('--headless')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-gpu')
-        options.add_argument('--ignore-certificate-errors')
-        options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36')
-
-        prefs = {'profile.default_content_setting_values.notifications': 2}
-        options.add_experimental_option('prefs', prefs)
-
-        PROXY = random.choice(proxies).get_address()
-
-        if debug:
-            print('use ' + PROXY + 'Proxy')
-
-        webdriver.DesiredCapabilities.CHROME['proxy']={
-            "httpProxy":PROXY,
-            "ftpProxy":PROXY,
-            "sslProxy":PROXY,
-            "proxyType":"MANUAL"
-        }
-
-        browser = webdriver.Chrome(executable_path=os.environ.get('CHROMEDRIVER_PATH'), options=options)
-                
-        browser.get('https://betfury.io/staking')
-        browser.implicitly_wait(10)
-
-        sleep(15)
-
-        popup_close_button = browser.find_elements_by_class_name('popup-btn-close')
-        if popup_close_button:
-            popup_close_button[0].click()   
-
+        req_proxy = RequestProxy(log_level=50)
+        proxies = req_proxy.get_proxy_list()
         while True:
+            if debug:
+                print('ProxyTries ' + str(proxyTries))
+
+            if proxyTries >= 10:
+                if debug:
+                    print('get new proxys')
+                proxyTries = 0
+                req_proxy = RequestProxy(log_level=50)
+                proxies = req_proxy.get_proxy_list()
+            else:
+                proxyTries += 1
+
+            options = webdriver.ChromeOptions()
+            options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+
+            options.add_argument('--headless')
+            options.add_argument('--disable-dev-shm-usage')
+            options.add_argument('--no-sandbox')
+            options.add_argument('--disable-gpu')
+            options.add_argument('--ignore-certificate-errors')
+            options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36')
+
+            prefs = {'profile.default_content_setting_values.notifications': 2}
+            options.add_experimental_option('prefs', prefs)
+
+            PROXY = random.choice(proxies).get_address()
+
+            if debug:
+                print('use ' + PROXY + 'Proxy')
+
+            webdriver.DesiredCapabilities.CHROME['proxy']={
+                "httpProxy":PROXY,
+                "ftpProxy":PROXY,
+                "sslProxy":PROXY,
+                "proxyType":"MANUAL"
+            }
+
+            browser = webdriver.Chrome(executable_path=os.environ.get('CHROMEDRIVER_PATH'), options=options)
+
+            popup_close_button = browser.find_elements_by_class_name('popup-btn-close')
+            if popup_close_button:
+                popup_close_button[0].click()
+
             browser.get('https://betfury.io/staking')
             browser.implicitly_wait(10)
-            sleep(15)
+            sleep(5)
 
             btc_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[1]/div[1]').text
             eth_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[2]/span').text
@@ -111,12 +107,13 @@ def scrape_bfg_csv():
 
             mycursor.close()
             mydb.close()
+            browser.quit()
             sleep(convert_to_min(1))
 
     except Exception as e:
         print(e)
         browser.quit()
         sleep(5)
-        scrape_bfg_csv()
+        scrape_bfg_db()
 
-generate_proxy_list()
+scrape_bfg_db()
