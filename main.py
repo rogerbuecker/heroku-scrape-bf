@@ -35,12 +35,18 @@ def scrape_bfg_db():
             options = webdriver.ChromeOptions()
             options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 
+            # prevent detection
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option('useAutomationExtension', False)
+            options.add_argument("--disable-blink-features")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+
             options.add_argument('--headless')
             options.add_argument('--disable-dev-shm-usage')
             options.add_argument('--no-sandbox')
             options.add_argument('--disable-gpu')
             options.add_argument('--ignore-certificate-errors')
-            options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36')
+            options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36')
 
             prefs = {'profile.default_content_setting_values.notifications': 2}
             options.add_experimental_option('prefs', prefs)
