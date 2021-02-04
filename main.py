@@ -1,6 +1,7 @@
 import mysql.connector
 from selenium import webdriver
 import os
+from time import sleep
 
 debug = True
 project = 'betfury'
