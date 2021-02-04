@@ -27,6 +27,11 @@ browser = webdriver.Chrome(executable_path=os.environ.get('CHROMEDRIVER_PATH'), 
 
 browser.get('https://betfury.io/staking')
 browser.implicitly_wait(10)
+sleep(20)
+
+popup_close_button = browser.find_elements_by_class_name('popup-btn-close')
+if popup_close_button:
+    popup_close_button[0].click()   
 
 btc_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[1]/div[1]').text
 eth_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[2]/span').text
