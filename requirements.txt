@@ -1,3 +1,2 @@
 selenium
 mysql-connector-python-rf
-http-request-randomizer
