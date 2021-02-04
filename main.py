@@ -2,7 +2,7 @@ import mysql.connector
 from selenium import webdriver
 import os
 
-debug = False
+debug = True
 project = 'betfury'
 
 options = webdriver.ChromeOptions()
