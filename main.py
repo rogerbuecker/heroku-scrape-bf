@@ -36,12 +36,14 @@ if popup_close_button:
 
 btc_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[1]/div[1]').text
 eth_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[2]/span').text
-trx_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[3]/span').text
-usdt_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[4]/span').text
-btt_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[5]/span').text
+bnb_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[3]/span').text
+trx_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[4]/span').text
+usdt_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[5]/span').text
+btt_pot_value = browser.find_element_by_xpath('//*[@id="app"]/div[3]/div[2]/div[1]/div/div[1]/ul/li[1]/div/ul/li[6]/span').text
 
 btc_pot_value = btc_pot_value.replace("BTC", "")
 eth_pot_value = eth_pot_value.replace("ETH", "")
+bnb_pot_value = bnb_pot_value.replace("BNB", "") 
 trx_pot_value = trx_pot_value.replace("TRX", "")
 trx_pot_value = trx_pot_value.replace(" ", "")
 usdt_pot_value = usdt_pot_value.replace("USDT", "")
@@ -58,8 +60,8 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-sql = 'INSERT INTO ' + project + ' (btc_pot, eth_pot, trx_pot, usdt_pot, btt_pot) VALUES (%s, %s, %s, %s, %s)'
-val = (btc_pot_value, eth_pot_value, trx_pot_value, usdt_pot_value, btt_pot_value)
+sql = 'INSERT INTO ' + project + ' (btc_pot, eth_pot, bnb_pot, trx_pot, usdt_pot, btt_pot) VALUES (%s, %s, %s, %s, %s, %s)'
+val = (btc_pot_value, eth_pot_value, bnb_pot_value, trx_pot_value, usdt_pot_value, btt_pot_value)
 mycursor.execute(sql, val)
 mydb.commit()
             
@@ -67,6 +69,7 @@ if debug:
     print(mycursor.rowcount, 'record inserted.')
     print(btc_pot_value)
     print(eth_pot_value)
+    print(bnb_pot_value)
     print(trx_pot_value)
     print(usdt_pot_value)
     print(btt_pot_value)
